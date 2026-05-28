@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 30px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 2px solid #623b2a;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background-color: #623b2a;
+            color: white;
+        }
+        .correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        #submit-btn {
+            background-color: #623b2a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="brownish">
+        <br>
+        <nav>
+            <a href="index.html">Home Page</a>
+            <a href="majorschoolrule.html">Major School Rules</a>
+            <a href="survivingtips.html">Surviving Tips</a>
+            <a href="leadship.html">Leadership Positions</a>
+            <a href="quiz.html">Small Quiz Session </a>
+        </nav>
+        <br>
+    </div>
+
+    <h1 style="text-align: center; color: #688eb1;">Know it's time to quiz your Knowledge...</h1>
+
+    <div class="quiz-container">
+        
+        <div class="question" id="q1">
+            <h3>1. What should you do before leaving campus?</h3>
+            <div class="options">
+                <div class="option" data-answer="wrong">Just leave quietly</div>
+                <div class="option" data-answer="correct">Sign out in the USO</div>
+                <div class="option" data-answer="wrong">Tell your friend</div>
+            </div>
+        </div>
+
+        
+        <div class="question" id="q2">
+            <h3>2. Which of these is NOT academic honesty?</h3>
+            <div class="options">
+                <div class="option" data-answer="correct">Copying a friend's homework</div>
+                <div class="option" data-answer="wrong">Citing your sources</div>
+                <div class="option" data-answer="wrong">Using AI only when allowed</div>
+            </div>
+        </div>
+
+        
+        <div class="question" id="q3">
+            <h3>3. Who can students ride cars with?</h3>
+            <div class="options">
+                <div class="option" data-answer="wrong">Any friend with a license</div>
+                <div class="option" data-answer="wrong">Older students</div>
+                <div class="option" data-answer="correct">Pre-approved adults (staff/parents)</div>
+            </div>
+        </div>
+
+       
+        <div class="question" id="q4">
+            <h3>4. What counts as bullying?</h3>
+            <div class="options">
+                <div class="option" data-answer="wrong">Playing with friends</div>
+                <div class="option" data-answer="correct">Repeatedly teasing or hurting someone</div>
+                <div class="option" data-answer="wrong">Disagreeing with someone</div>
+            </div>
+        </div>
+
+        
+        <div class="question" id="q5">
+            <h3>5. Which of these is NOT allowed on campus?</h3>
+            <div class="options">
+                <div class="option" data-answer="wrong">Wearing a school uniform</div>
+                <div class="option" data-answer="correct">Carrying a weapon</div>
+                <div class="option" data-answer="wrong">Studying in the library</div>
+            </div>
+        </div>
+
+        <button id="submit-btn">Check Answers</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            const submitBtn = document.getElementById('submit-btn');
+            const resultDiv = document.getElementById('result');
+            let score = 0;
+            let answeredQuestions = new Set();
+
+           
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    
+                    parent.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    answeredQuestions.add(parent.parentElement.id);
+                });
+            });
+
+            
+            submitBtn.addEventListener('click', function() {
+                score = 0;
+               
+                options.forEach(option => {
+                    option.style.pointerEvents = 'none';
+                    if (option.dataset.answer === 'correct') {
+                        option.classList.add('correct');
+                    } else if (option.classList.contains('selected') && option.dataset.answer === 'wrong') {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+             
+                document.querySelectorAll('.option.selected').forEach(option => {
+                    if (option.dataset.answer === 'correct') {
+                        score++;
+                    }
+                });
+
+            
+                resultDiv.textContent = `You got ${score} out of 5 questions right!`;
+                if (score === 5) {
+                    resultDiv.style.color = '#28a745';
+                    resultDiv.textContent += " Perfect! You know the rules well!";
+                } else if (score >= 3) {
+                    resultDiv.style.color = '#ffc107';
+                    resultDiv.textContent += " Good job! Review the rules you missed.";
+                } else {
+                    resultDiv.style.color = '#dc3545';
+                    resultDiv.textContent += " Need to study the rules more. Check the Major School Rules page!";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
